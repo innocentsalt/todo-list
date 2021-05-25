@@ -131,3 +131,48 @@ a {
     transform: translateY(-8px) rotate(-45deg);
   }
 }
+
+input {
+  border: none;
+  font-size: large;
+}
+
+input:focus {
+  outline: none;
+}
+
+.centered {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.add-project-popup {
+  display: none;
+  z-index: -1;
+  border: 1px #475569 solid;
+  width: 25rem;
+  height: 6rem;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+}
+
+.add-project-popup .form-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+}
+
+.add-project-popup .action-bar {
+  display: flex;
+  padding-bottom: 0.5rem;
+  justify-content: space-between;
+  border-bottom: 1px #475569 solid;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.clickable {
+  color: #475569;
+  cursor: pointer; 
+}
