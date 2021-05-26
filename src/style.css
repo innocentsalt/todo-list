@@ -191,3 +191,8 @@ input:focus {
 .user-projects .nav-link {
   margin-left: 1rem;
 }
+
+.current-project {
+  font-size: 2rem;
+  font-weight: 500;
+}

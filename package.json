@@ -17,5 +17,7 @@
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "uid": "^2.0.0"
+  }
 }
