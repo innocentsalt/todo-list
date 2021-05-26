@@ -6,6 +6,8 @@ const addProject = document.querySelector('.add-project')
 const addProjectPopup = document.querySelector('.add-project-popup')
 const addProjectCancel = document.querySelector('.form-container .cancel')
 const projectTitle = document.querySelector('.project-title')
+const addProjectOk = document.querySelector('.form-container .ok')
+const userProjects = document.querySelector('.user-projects')
 
 hamburger.addEventListener('click', () => {
   if (addProjectPopup.style.display !== 'none') {
@@ -28,4 +30,18 @@ addProjectCancel.addEventListener('click', () => {
   addProjectPopup.style.display = 'none'
   sidebar.classList.toggle('active')
   hamburger.classList.toggle('active')
+})
+
+addProjectOk.addEventListener('click', () => {
+  if (!projectTitle.value) return
+  const project = document.createElement('li')
+  project.classList.add('nav-item')
+  const projectLink = document.createElement('a')
+  projectLink.classList.add('nav-link')
+  projectLink.setAttribute('href', '#')
+  projectLink.textContent = projectTitle.value
+  project.appendChild(projectLink)
+  addProjectPopup.style.display = 'none'
+  userProjects.appendChild(project)
+  projectTitle.value = ''
 })
