@@ -36,6 +36,13 @@ addProjectOk.addEventListener('click', () => {
   if (!projectTitle.value) return
   const project = document.createElement('li')
   project.classList.add('nav-item')
+  const deleteProject = document.createElement('span')
+  deleteProject.classList.add('material-icons', 'clickable')
+  deleteProject.textContent = 'delete_outline'
+  deleteProject.addEventListener('click', () => {
+    userProjects.removeChild(project)
+  })
+  project.appendChild(deleteProject)
   const projectLink = document.createElement('a')
   projectLink.classList.add('nav-link')
   projectLink.setAttribute('href', '#')

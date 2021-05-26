@@ -49,6 +49,8 @@ a {
 
 .container {
   margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
 }
 
 .sidebar {
@@ -179,4 +181,13 @@ input:focus {
 
 .active {
   color: #101010;
+}
+
+.user-projects .nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.user-projects .nav-link {
+  margin-left: 1rem;
 }
