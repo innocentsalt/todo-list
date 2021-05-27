@@ -30,6 +30,7 @@ function createProjectDom(project, isDefault=false) {
   projectLink.setAttribute('href', '#')
   projectLink.textContent = project.title.slice(0, 10)
   projectLink.addEventListener('click', () => {
+    // Mark it as current project
     const allProjects = document.querySelectorAll('.nav-link')
     allProjects.forEach(link => {
       if (link.id !== projectLink.id) {
@@ -39,6 +40,10 @@ function createProjectDom(project, isDefault=false) {
         currentProject.textContent = link.textContent
       }
     })
+    // If hamburger is active then, hide the nav-menu
+    sidebar.classList.toggle('active')
+    hamburger.classList.toggle('active')
+    // Render all todos for that project
   })
   projectDom.appendChild(projectLink)
   addProjectPopup.style.display = 'none'

@@ -53,6 +53,10 @@ a {
   grid-template-columns: 1fr 4fr;
 }
 
+.main-content {
+  margin-left: 1rem;
+}
+
 .sidebar {
   margin-left: 2rem;
 }
@@ -102,6 +106,10 @@ a {
     text-align: center;
     transition: 0.3s;
     box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+  }
+
+  .container {
+    grid-template-columns: 1fr;
   }
 
   .sidebar.active {
