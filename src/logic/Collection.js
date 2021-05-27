@@ -5,6 +5,10 @@ const Collection = SuperClass => class extends SuperClass {
   add(...items) {
     this._items.push(...items)
   }
+
+  remove(...items) {
+    items.forEach(item => this._items.splice(this._items.indexOf(item), 1))
+  }
 }
 
 export { Collection }
