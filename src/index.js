@@ -1,5 +1,9 @@
 import './style.css'
 import { Project } from './logic/Project'
+import { TodoList } from './logic/TodoList'
+import { Todo } from './logic/Todo'
+
+const todoList = new TodoList()
 
 const hamburger = document.querySelector('.hamburger')
 const sidebar = document.querySelector('.sidebar')
@@ -11,6 +15,8 @@ const addProjectOk = document.querySelector('.form-container .ok')
 const userProjects = document.querySelector('.user-projects')
 const defaultProjects = document.querySelector('.default-projects')
 const currentProject = document.querySelector('.current-project')
+const addTodoContainer = document.querySelector('.add-todo-container')
+const maincontent = document.querySelector('.main-content')
 
 function createProjectDom(project, isDefault=false) {
   const projectDom = document.createElement('li')
@@ -19,7 +25,12 @@ function createProjectDom(project, isDefault=false) {
   deleteProject.classList.add('material-icons', 'clickable')
   deleteProject.textContent = 'delete_outline'
   deleteProject.addEventListener('click', () => {
+    // Remove from sidebar
     userProjects.removeChild(projectDom)
+    // If it's the current project clear todos both from DOM and todoList
+    todoList.remove(project)
+    currentProject.textContent = ''
+    addTodoContainer.style.display = 'none'
   })
   if (!isDefault) {
     projectDom.appendChild(deleteProject)
@@ -40,7 +51,8 @@ function createProjectDom(project, isDefault=false) {
         currentProject.textContent = link.textContent
       }
     })
-    // If hamburger is active then, hide the nav-menu
+    // If hamburger is active then, hide the nav-menu and add option to create new todo
+    addTodoContainer.style.display = 'block'
     sidebar.classList.toggle('active')
     hamburger.classList.toggle('active')
     // Render all todos for that project
@@ -88,7 +100,9 @@ addProjectCancel.addEventListener('click', () => {
 
 addProjectOk.addEventListener('click', () => {
   if (!projectTitle.value) return
-  userProjects.appendChild(createProjectDom(new Project(projectTitle.value)))
+  const newProject = new Project(projectTitle.value)
+  todoList.add(newProject)
+  userProjects.appendChild(createProjectDom(newProject))
   projectTitle.value = ''
 })
 

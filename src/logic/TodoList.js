@@ -7,3 +7,5 @@ class Empty {
 class TodoList extends Collection(Empty) {
   get projects() { this._items }
 }
+
+export { TodoList }
