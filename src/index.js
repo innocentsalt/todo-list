@@ -7,19 +7,33 @@ const todoList = new TodoList()
 
 const hamburger = document.querySelector('.hamburger')
 const sidebar = document.querySelector('.sidebar')
-const addProject = document.querySelector('.add-project')
-const addProjectPopup = document.querySelector('.add-project-popup')
-const addProjectCancel = document.querySelector('.form-container .cancel')
-const projectTitle = document.querySelector('.project-title')
-const addProjectOk = document.querySelector('.form-container .ok')
+
 const userProjects = document.querySelector('.user-projects')
 const defaultProjects = document.querySelector('.default-projects')
 const currentProject = document.querySelector('.current-project')
 const addTodoContainer = document.querySelector('.add-todo-container')
 const maincontent = document.querySelector('.main-content')
+const todos = document.querySelector('.todos')
+
+// Project
+const addProject = document.querySelector('.add-project')
+const addProjectPopup = document.querySelector('.add-project-popup')
+const addProjectCancel = document.querySelector('.form-container .cancel')
+const projectTitle = document.querySelector('.project-title')
+const addProjectOk = document.querySelector('.form-container .ok')
+
+// Todo
+const addTodo = document.querySelector('.add-todo')
+const addTodoPopup = document.querySelector('.add-todo-popup')
+const addTodoClose = document.querySelector('.form-container .close')
+const todoTitle = document.querySelector('.todo-title')
+const todoDescription = document.querySelector('.todo-description')
+const todoDueDate = document.querySelector('.todo-duedate')
+const addTodoSave = document.querySelector('.form-container .save')
 
 function createProjectDom(project, isDefault=false) {
   const projectDom = document.createElement('li')
+  projectDom.setAttribute('id', project.id)
   projectDom.classList.add('nav-item')
   const deleteProject = document.createElement('span')
   deleteProject.classList.add('material-icons', 'clickable')
@@ -49,6 +63,7 @@ function createProjectDom(project, isDefault=false) {
       } else {
         link.classList.add('active')
         currentProject.textContent = link.textContent
+        currentProject.setAttribute('id', project.id)
       }
     })
     // If hamburger is active then, hide the nav-menu and add option to create new todo
@@ -68,10 +83,18 @@ function createProjectDom(project, isDefault=false) {
   return projectDom
 }
 
+function createTodoDom(todo) {
+  const todoDom = document.createElement('div')
+  todoDom.textContent = todo.title
+  return todoDom
+}
+
 function loadDefaultProjects() {
   const inbox = new Project('Inbox')
   const today = new Project('Today')
   const thisWeek = new Project('This week')
+
+  todoList.add(inbox, today, thisWeek)
 
   defaultProjects.append(
     createProjectDom(inbox, true),
@@ -88,6 +111,7 @@ hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('active')
 })
 
+// Project event listeners
 addProject.addEventListener('click', () => {
   addProjectPopup.style.display = 'block'
   if (sidebar.classList.contains('active')) {
@@ -111,6 +135,31 @@ addProjectOk.addEventListener('click', () => {
   projectTitle.value = ''
   sidebar.classList.toggle('active')
   hamburger.classList.toggle('active')
+})
+
+
+// Todo event listeners
+addTodo.addEventListener('click', () => {
+  addTodoPopup.style.display = 'block'
+})
+
+addTodoClose.addEventListener('click', () => {
+  todoTitle.value = ''
+  todoDescription.value = ''
+  todoDueDate.value = ''
+  addTodoPopup.style.display = 'none'
+})
+
+addTodoSave.addEventListener('click', () => {
+  if (!todoTitle.value) return
+  const newTodo = new Todo(todoTitle.value, todoDescription.value, todoDueDate.value)
+  const project = todoList.items.find(item => item.id === currentProject.id)
+  project.add(newTodo)
+  todos.appendChild(createTodoDom(newTodo))
+  todoTitle.value = ''
+  todoDescription.value = ''
+  todoDueDate.value = ''
+  addTodoPopup.style.display = 'none'
 })
 
 loadDefaultProjects()

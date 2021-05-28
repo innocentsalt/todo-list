@@ -183,7 +183,8 @@ input:focus {
   transform: translate(-50%, -50%);
 }
 
-.add-project-popup {
+.add-project-popup,
+.add-todo-popup {
   display: none;
   z-index: -1;
   border: 1px #475569 solid;
@@ -192,13 +193,19 @@ input:focus {
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
 }
 
-.add-project-popup .form-container {
+.add-todo-popup {
+  height: 15rem;
+}
+
+.add-project-popup .form-container,
+.add-todo-popup .form-container {
   display: flex;
   flex-direction: column;
   row-gap: 1.5rem;
 }
 
-.add-project-popup .action-bar {
+.add-project-popup .action-bar,
+.add-todo-popup .action-bar {
   display: flex;
   padding-bottom: 0.5rem;
   justify-content: space-between;

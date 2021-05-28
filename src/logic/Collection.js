@@ -9,6 +9,10 @@ const Collection = SuperClass => class extends SuperClass {
   remove(...items) {
     items.forEach(item => this._items.splice(this._items.indexOf(item), 1))
   }
+
+  get items() {
+    return this._items
+  }
 }
 
 export { Collection }
