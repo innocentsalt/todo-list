@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 html {
@@ -95,17 +97,17 @@ a {
 
 .add-todo {
   display: flex;
-  max-width: 7.5rem;
+  max-width: 8rem;
   padding: 0.5rem;
   align-items: center;
   background-color: #eeeeee;
   cursor: pointer;
   border-radius: 0.3rem;
+  border: 1px solid transparent;
 }
 
 .add-todo:hover {
-  transform: scale(1.05);
-  transition: 0.3s;
+  border: 1px solid #101010;
 }
 
 .add-todo span {

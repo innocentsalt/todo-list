@@ -27,7 +27,7 @@ function createProjectDom(project, isDefault=false) {
   deleteProject.addEventListener('click', () => {
     // Remove from sidebar
     userProjects.removeChild(projectDom)
-    // If it's the current project clear todos both from DOM and todoList
+    // If its the current project clear todos both from DOM and todoList
     todoList.remove(project)
     currentProject.textContent = ''
     addTodoContainer.style.display = 'none'
@@ -52,7 +52,12 @@ function createProjectDom(project, isDefault=false) {
       }
     })
     // If hamburger is active then, hide the nav-menu and add option to create new todo
-    addTodoContainer.style.display = 'block'
+    // expect Today, This week
+    if (['Today', 'This week'].includes(project.title)) {
+      addTodoContainer.style.display = 'none'
+    } else {
+      addTodoContainer.style.display = 'block'
+    }
     sidebar.classList.toggle('active')
     hamburger.classList.toggle('active')
     // Render all todos for that project
@@ -104,6 +109,8 @@ addProjectOk.addEventListener('click', () => {
   todoList.add(newProject)
   userProjects.appendChild(createProjectDom(newProject))
   projectTitle.value = ''
+  sidebar.classList.toggle('active')
+  hamburger.classList.toggle('active')
 })
 
 loadDefaultProjects()
