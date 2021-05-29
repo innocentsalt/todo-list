@@ -1,4 +1,7 @@
+import { differenceInHours, differenceInDays } from 'date-fns'
+
 import './style.css'
+
 import { Project } from './logic/Project'
 import { TodoList } from './logic/TodoList'
 import { Todo } from './logic/Todo'
@@ -68,26 +71,38 @@ function createProjectDom(project, isDefault=false) {
         currentProject.setAttribute('id', project.id)
       }
     })
+    // Render all todos after clearing the todos
+    todos.textContent = ''
     // If hamburger is active then, hide the nav-menu and add option to create new todo
     // expect Today, This week
     if (['Today', 'This week'].includes(project.title)) {
       addTodoContainer.style.display = 'none'
+      todoList.items.forEach(projectItem => {
+        projectItem.items.forEach(todoItem => {
+          if (project.title === 'Today') {
+            let hours = differenceInHours(new Date(), new Date(todoItem.dueDate))
+            if (hours >= 0 && hours < 24) todos.appendChild(createTodoDom(todoItem, projectItem, true))
+          } else if (project.title === 'This week') {
+            let days = differenceInDays(new Date(), new Date(todoItem.dueDate))
+            if (days >= 0 && days < 7) todos.appendChild(createTodoDom(todoItem, projectItem, true))
+          }
+        })
+      })
     } else {
       addTodoContainer.style.display = 'block'
+      todos.append(...project.items.map(item => createTodoDom(item, project, false)))
     }
     sidebar.classList.toggle('active')
     hamburger.classList.toggle('active')
-    // Render all todos for that project
-    todos.textContent = ''
-    todos.append(...project.items.map(createTodoDom))
   })
+
   projectDom.appendChild(projectLink)
   addProjectPopup.style.display = 'none'
 
   return projectDom
 }
 
-function createTodoDom(todo, project) {
+function createTodoDom(todo, project, infoProject = false) {
   const todoDom = document.createElement('div')
   todoDom.classList.add('todo-container')
   const todoDelete = document.createElement('div')
@@ -101,6 +116,9 @@ function createTodoDom(todo, project) {
   const todoTitle = document.createElement('div')
   todoTitle.classList.add('todo-title')
   todoTitle.textContent = todo.title
+  if (infoProject) {
+    todoTitle.textContent = ' [' + project.title + '] ' + todo.title
+  }
   const todoComplete = document.createElement('div')
   todoComplete.classList.add('material-icons', 'md-30', 'clickable')
   todoComplete.textContent = 'check_circle_outline'
