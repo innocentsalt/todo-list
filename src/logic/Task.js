@@ -5,6 +5,7 @@ class Task {
     this._title = title
     this._description = description
     this._dueDate = dueDate
+    this._complete = false
     this._id = uid(16)
   }
 
@@ -13,6 +14,8 @@ class Task {
   get description() { return this._description }
 
   get dueDate() { return this._dueDate }
+
+  get complete() { return this._complete }
 
   get id() { return this._id }
 
@@ -26,6 +29,10 @@ class Task {
 
   set dueDate(value) {
     this._dueDate = value 
+  }
+
+  set complete(value) {
+    this._complete = value
   }
 }
 

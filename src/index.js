@@ -121,11 +121,11 @@ function createTodoDom(todo, project, infoProject = false) {
   }
   const todoComplete = document.createElement('div')
   todoComplete.classList.add('material-icons', 'md-30', 'clickable')
-  todoComplete.textContent = 'check_circle_outline'
+  todoComplete.textContent = todo.complete ? 'check_circle' : 'check_circle_outline'
   todoComplete.addEventListener('click', () => {
     // Toggle the complete status both DOM & todo object
     todo.complete = !todo.complete
-    todoComplete.classList.toggle('complete')
+    todoComplete.textContent = todo.complete ? 'check_circle' : 'check_circle_outline'
   })
   todoDom.append(todoDelete, todoTitle, todoComplete)
   return todoDom
