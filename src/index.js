@@ -89,7 +89,22 @@ function createProjectDom(project, isDefault=false) {
 
 function createTodoDom(todo) {
   const todoDom = document.createElement('div')
-  todoDom.textContent = todo.title
+  todoDom.classList.add('todo-container')
+  const todoDelete = document.createElement('div')
+  todoDelete.classList.add('material-icons', 'md-30', 'clickable')
+  todoDelete.textContent = 'delete_outline'
+  const todoTitle = document.createElement('div')
+  todoTitle.classList.add('todo-title')
+  todoTitle.textContent = todo.title
+  const todoComplete = document.createElement('div')
+  todoComplete.classList.add('material-icons', 'md-30', 'clickable')
+  todoComplete.textContent = 'check_circle_outline'
+  todoComplete.addEventListener('click', () => {
+    // Toggle the complete status both DOM & todo object
+    todo.complete = !todo.complete
+    todoComplete.classList.toggle('complete')
+  })
+  todoDom.append(todoDelete, todoTitle, todoComplete)
   return todoDom
 }
 

@@ -57,6 +57,7 @@ a {
 
 .main-content {
   margin: 0 1rem 0 1rem;
+  max-width: 50vw;
 }
 
 .sidebar {
@@ -116,56 +117,9 @@ a {
 
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }
+.material-icons.md-30 { font-size: 30px; }
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
-
-@media only screen and (max-width: 480px) {
-  .sidebar {
-    margin: 1rem 0 0 0;
-    position: fixed;
-    left: -100%;
-    top: 5rem;
-    background-color: #fff;
-    width: 100%;
-    border-radius: 10px;
-    text-align: center;
-    transition: 0.3s;
-    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-  }
-
-  .container {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar.active {
-    left: 0;
-  }
-
-  .side-navbar {
-    align-items: center;
-  }
-
-  .nav-item {
-    margin: 1rem 0;
-  }
-
-  .hamburger {
-    display: block;
-    cursor: pointer;
-  }
-
-  .hamburger.active .bar:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg)
-  }
-
-  .hamburger.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-  }
-}
 
 input {
   border: none;
@@ -259,4 +213,78 @@ input:focus {
   background-color: black;
   z-index: 1;
   display: none;
+}
+
+.todos {
+  margin-top: 1rem;
+}
+
+.todo-container {
+  display: grid;
+  grid-template-columns: 1fr 14fr 1fr;
+  align-items: center;
+}
+
+.todo-title {
+  font-size: 24px;
+}
+
+.material-icons.complete {
+  color: green;
+}
+
+@media only screen and (max-width: 480px) {
+  .main-content {
+    max-width: 100%;
+  }
+
+  .todo-container {
+    grid-template-columns: 1fr 7fr 1fr;
+  }
+
+  .sidebar {
+    margin: 1rem 0 0 0;
+    position: fixed;
+    left: -100%;
+    top: 5rem;
+    background-color: #fff;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .side-navbar {
+    align-items: center;
+  }
+
+  .nav-item {
+    margin: 1rem 0;
+  }
+
+  .hamburger {
+    display: block;
+    cursor: pointer;
+  }
+
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg)
+  }
+
+  .hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
 }
