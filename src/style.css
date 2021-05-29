@@ -199,6 +199,7 @@ input:focus {
 .current-project-container {
   display: flex;
   justify-content: space-between;
+  padding-bottom: 1rem;
 }
 
 .disable-div {
@@ -217,6 +218,9 @@ input:focus {
 
 .todos {
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
 }
 
 .todo-container {
