@@ -138,10 +138,18 @@ function loadDefaultProjects() {
 
   todoList.add(inbox, today, thisWeek)
 
+  /** Nothing great */
+  const should = new Project('Should')
+  should.add(new Todo('like the project if you really liked it'))
+  should.add(new Todo('star the project on github if you like'))
+  should.add(new Todo('provide the feedback if you feel'))
+  todoList.add(should)
+
   defaultProjects.append(
     createProjectDom(inbox, true),
     createProjectDom(today, true),
-    createProjectDom(thisWeek, true)
+    createProjectDom(thisWeek, true),
+    createProjectDom(should, true)
   )
 }
 
