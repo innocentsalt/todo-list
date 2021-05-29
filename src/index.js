@@ -14,6 +14,7 @@ const currentProject = document.querySelector('.current-project')
 const addTodoContainer = document.querySelector('.add-todo-container')
 const maincontent = document.querySelector('.main-content')
 const todos = document.querySelector('.todos')
+const disableDiv = document.querySelector('.disable-div')
 
 // Project
 const addProject = document.querySelector('.add-project')
@@ -41,9 +42,10 @@ function createProjectDom(project, isDefault=false) {
   deleteProject.addEventListener('click', () => {
     // Remove from sidebar
     userProjects.removeChild(projectDom)
-    // If its the current project clear todos both from DOM and todoList
+    // If it's the current project clear todos both from DOM and todoList
     todoList.remove(project)
     currentProject.textContent = ''
+    todos.textContent = ''
     addTodoContainer.style.display = 'none'
   })
   if (!isDefault) {
@@ -76,6 +78,8 @@ function createProjectDom(project, isDefault=false) {
     sidebar.classList.toggle('active')
     hamburger.classList.toggle('active')
     // Render all todos for that project
+    todos.textContent = ''
+    todos.append(...project.items.map(createTodoDom))
   })
   projectDom.appendChild(projectLink)
   addProjectPopup.style.display = 'none'
@@ -113,14 +117,15 @@ hamburger.addEventListener('click', () => {
 
 // Project event listeners
 addProject.addEventListener('click', () => {
+  disableDiv.style.display = 'block'
+  addTodoPopup.style.display = 'none'
   addProjectPopup.style.display = 'block'
-  if (sidebar.classList.contains('active')) {
-    sidebar.classList.toggle('active')
-    hamburger.classList.toggle('active')
-  }
+  sidebar.classList.toggle('active')
+  hamburger.classList.toggle('active')
 })
 
 addProjectCancel.addEventListener('click', () => {
+  disableDiv.style.display = 'none'
   projectTitle.value = ''
   addProjectPopup.style.display = 'none'
   sidebar.classList.toggle('active')
@@ -129,6 +134,7 @@ addProjectCancel.addEventListener('click', () => {
 
 addProjectOk.addEventListener('click', () => {
   if (!projectTitle.value) return
+  disableDiv.style.display = 'none'
   const newProject = new Project(projectTitle.value)
   todoList.add(newProject)
   userProjects.appendChild(createProjectDom(newProject))
@@ -140,6 +146,8 @@ addProjectOk.addEventListener('click', () => {
 
 // Todo event listeners
 addTodo.addEventListener('click', () => {
+  addProjectPopup.style.display = 'none'
+  disableDiv.style.display = 'block'
   addTodoPopup.style.display = 'block'
 })
 
@@ -148,10 +156,12 @@ addTodoClose.addEventListener('click', () => {
   todoDescription.value = ''
   todoDueDate.value = ''
   addTodoPopup.style.display = 'none'
+  disableDiv.style.display = 'none'
 })
 
 addTodoSave.addEventListener('click', () => {
   if (!todoTitle.value) return
+  disableDiv.style.display = 'none'
   const newTodo = new Todo(todoTitle.value, todoDescription.value, todoDueDate.value)
   const project = todoList.items.find(item => item.id === currentProject.id)
   project.add(newTodo)
