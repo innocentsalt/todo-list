@@ -144,12 +144,12 @@ function loadDefaultProjects() {
   should.add(new Todo('star the project on github if you like'))
   should.add(new Todo('provide the feedback if you feel'))
   todoList.add(should)
+  userProjects.appendChild(createProjectDom(should))
 
   defaultProjects.append(
     createProjectDom(inbox, true),
     createProjectDom(today, true),
-    createProjectDom(thisWeek, true),
-    createProjectDom(should, true)
+    createProjectDom(thisWeek, true)
   )
 }
 
