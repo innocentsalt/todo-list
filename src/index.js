@@ -10,12 +10,10 @@ const todoList = new TodoList()
 
 const hamburger = document.querySelector('.hamburger')
 const sidebar = document.querySelector('.sidebar')
-
 const userProjects = document.querySelector('.user-projects')
 const defaultProjects = document.querySelector('.default-projects')
 const currentProject = document.querySelector('.current-project')
 const addTodoContainer = document.querySelector('.add-todo-container')
-const maincontent = document.querySelector('.main-content')
 const todos = document.querySelector('.todos')
 const disableDiv = document.querySelector('.disable-div')
 
@@ -50,6 +48,8 @@ function createProjectDom(project, isDefault=false) {
     currentProject.textContent = ''
     todos.textContent = ''
     addTodoContainer.style.display = 'none'
+    // Trigger localStorage
+    updateLocalStorage()
   })
   if (!isDefault) {
     projectDom.appendChild(deleteProject)
@@ -77,8 +77,8 @@ function createProjectDom(project, isDefault=false) {
     // expect Today, This week
     if (['Today', 'This week'].includes(project.title)) {
       addTodoContainer.style.display = 'none'
-      todoList.items.forEach(projectItem => {
-        projectItem.items.forEach(todoItem => {
+      todoList.projects.forEach(projectItem => {
+        projectItem.todos.forEach(todoItem => {
           if (project.title === 'Today') {
             let hours = differenceInHours(new Date(), new Date(todoItem.dueDate))
             if (hours >= 0 && hours < 24) todos.appendChild(createTodoDom(todoItem, projectItem, true))
@@ -90,7 +90,7 @@ function createProjectDom(project, isDefault=false) {
       })
     } else {
       addTodoContainer.style.display = 'block'
-      todos.append(...project.items.map(item => createTodoDom(item, project, false)))
+      todos.append(...project.todos.map(item => createTodoDom(item, project, false)))
     }
     sidebar.classList.toggle('active')
     hamburger.classList.toggle('active')
@@ -112,6 +112,8 @@ function createTodoDom(todo, project, infoProject = false) {
     // Remove the todo from DOM as well as from the respective project
     todos.removeChild(todoDom)
     project.remove(todo)
+    // Trigger localStorage
+    updateLocalStorage()
   })
   const todoTitle = document.createElement('div')
   todoTitle.classList.add('todo-title')
@@ -126,6 +128,8 @@ function createTodoDom(todo, project, infoProject = false) {
     // Toggle the complete status both DOM & todo object
     todo.complete = !todo.complete
     todoComplete.textContent = todo.complete ? 'check_circle' : 'check_circle_outline'
+    // Trigger localStorage
+    updateLocalStorage()
   })
   todoDom.append(todoDelete, todoTitle, todoComplete)
   return todoDom
@@ -142,7 +146,7 @@ function loadDefaultProjects() {
   const should = new Project('Should')
   should.add(new Todo('like the project if you really liked it'))
   should.add(new Todo('star the project on github if you like'))
-  should.add(new Todo('provide the feedback if you feel'))
+  should.add(new Todo('provide the feedback if you feel')) 
   todoList.add(should)
   userProjects.appendChild(createProjectDom(should))
 
@@ -153,10 +157,18 @@ function loadDefaultProjects() {
   )
 }
 
+function loadProjects() {
+  todoList.projects.forEach(project => {
+    if (['Inbox', 'Today', 'This week'].includes(project.title)) {
+      defaultProjects.appendChild(createProjectDom(project, true))
+    } else {
+      userProjects.appendChild(createProjectDom(project))
+    }
+  })
+}
+
+// Hamburger listeners
 hamburger.addEventListener('click', () => {
-  if (addProjectPopup.style.display !== 'none') {
-    addProjectPopup.style.display = 'none'
-  }
   sidebar.classList.toggle('active')
   hamburger.classList.toggle('active')
 })
@@ -181,14 +193,15 @@ addProjectCancel.addEventListener('click', () => {
 addProjectOk.addEventListener('click', () => {
   if (!projectTitle.value) return
   disableDiv.style.display = 'none'
-  const newProject = new Project(projectTitle.value)
+  const newProject = new Project(projectTitle.value, undefined, new Date(), false)
   todoList.add(newProject)
   userProjects.appendChild(createProjectDom(newProject))
   projectTitle.value = ''
   sidebar.classList.toggle('active')
   hamburger.classList.toggle('active')
+  // Trigger localStorage
+  updateLocalStorage()
 })
-
 
 // Todo event listeners
 addTodo.addEventListener('click', () => {
@@ -208,14 +221,44 @@ addTodoClose.addEventListener('click', () => {
 addTodoSave.addEventListener('click', () => {
   if (!todoTitle.value) return
   disableDiv.style.display = 'none'
-  const newTodo = new Todo(todoTitle.value, todoDescription.value, todoDueDate.value)
-  const project = todoList.items.find(item => item.id === currentProject.id)
+  const newTodo = new Todo(todoTitle.value, todoDescription.value ?? 'No description added!', todoDueDate.value ?? new Date(), false)
+  const project = todoList.projects.find(item => item.id === currentProject.id)
   project.add(newTodo)
   todos.appendChild(createTodoDom(newTodo, project))
   todoTitle.value = ''
   todoDescription.value = ''
   todoDueDate.value = ''
   addTodoPopup.style.display = 'none'
+  // Trigger localStorage
+  updateLocalStorage()
 })
 
-loadDefaultProjects()
+function updateLocalStorage() {
+  localStorage.setItem('todoList', JSON.stringify(todoList))
+}
+
+function setupLocalStorage() {
+  if (localStorage.getItem('todoList')) {
+    todoList.clear()
+    // Retrive all projects along with todos
+    const parsed = JSON.parse(localStorage.getItem('todoList'))
+    parsed['_items'].forEach(projectItem => {
+      const newProject = new Project(projectItem['_title'])
+      projectItem['_items'].forEach(todoItem => {
+        const newTodo = new Todo(
+          todoItem['_title'],
+          todoItem['_description'],
+          new Date(todoItem['_dueDate']),
+          todoItem['_complete']
+        )
+        newProject.add(newTodo)
+      })
+      todoList.add(newProject)
+    })
+    loadProjects()
+  } else {
+    loadDefaultProjects()
+  }
+}
+
+setupLocalStorage()

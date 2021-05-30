@@ -1,11 +1,11 @@
 import { uid } from 'uid'
 
 class Task {
-  constructor(title = '', description = '', dueDate = new Date()) {
+  constructor(title = '', description = '', dueDate = new Date(), complete = false) {
     this._title = title
     this._description = description
     this._dueDate = dueDate
-    this._complete = false
+    this._complete = complete
     this._id = uid(16)
   }
 

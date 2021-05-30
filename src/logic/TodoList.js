@@ -5,6 +5,7 @@ class Empty {
 }
 
 class TodoList extends Collection(Empty) {
+  get projects() { return this.items }
 }
 
 export { TodoList }
