@@ -115,7 +115,7 @@ function createTodoDom(todo, project, infoProject = false) {
   todoDelete.textContent = 'delete_outline'
   todoDelete.addEventListener('click', () => {
     // Remove the todo from DOM as well as from the respective project
-    todos.removeChild(todoDom)
+    todos.removeChild(todoDomContainer)
     project.remove(todo)
     // Trigger localStorage
     updateLocalStorage()
@@ -234,7 +234,7 @@ addTodoClose.addEventListener('click', () => {
 addTodoSave.addEventListener('click', () => {
   if (!todoTitle.value) return
   disableDiv.style.display = 'none'
-  const newTodo = new Todo(todoTitle.value, todoDescription.value, todoDueDate.value)
+  const newTodo = new Todo(todoTitle.value, todoDescription.value || '', todoDueDate.value || new Date())
   const project = todoList.projects.find(item => item.id === currentProject.id)
   project.add(newTodo)
   todos.appendChild(createTodoDom(newTodo, project))
