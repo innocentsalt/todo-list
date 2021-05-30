@@ -1,4 +1,4 @@
-import { differenceInHours, differenceInDays } from 'date-fns'
+import { differenceInHours, differenceInDays, format } from 'date-fns'
 
 import './style.css'
 
@@ -103,8 +103,13 @@ function createProjectDom(project, isDefault=false) {
 }
 
 function createTodoDom(todo, project, infoProject = false) {
+  const todoDueDate = document.createElement('div')
+  todoDueDate.textContent = format(new Date(todo.dueDate), 'd MMM yyyy')
+  todoDueDate.classList.add('hidden')
+  const todoDomContainer = document.createElement('div')
+  todoDomContainer.classList.add('todo-dom-container')
   const todoDom = document.createElement('div')
-  todoDom.classList.add('todo-container')
+  todoDom.classList.add('todo-dom')
   const todoDelete = document.createElement('div')
   todoDelete.classList.add('material-icons', 'md-30', 'clickable')
   todoDelete.textContent = 'delete_outline'
@@ -115,12 +120,19 @@ function createTodoDom(todo, project, infoProject = false) {
     // Trigger localStorage
     updateLocalStorage()
   })
+  const todoDescription = document.createElement('div')
+  todoDescription.textContent = todo.description || 'No description added!'
+  todoDescription.classList.add('hidden')
   const todoTitle = document.createElement('div')
-  todoTitle.classList.add('todo-title')
+  todoTitle.classList.add('todo-title', 'clickable')
   todoTitle.textContent = todo.title
   if (infoProject) {
     todoTitle.textContent = ' [' + project.title + '] ' + todo.title
   }
+  todoTitle.addEventListener('click', () => {
+    todoDescription.classList.toggle('hidden')
+    todoDueDate.classList.toggle('hidden')
+  })
   const todoComplete = document.createElement('div')
   todoComplete.classList.add('material-icons', 'md-30', 'clickable')
   todoComplete.textContent = todo.complete ? 'check_circle' : 'check_circle_outline'
@@ -132,7 +144,8 @@ function createTodoDom(todo, project, infoProject = false) {
     updateLocalStorage()
   })
   todoDom.append(todoDelete, todoTitle, todoComplete)
-  return todoDom
+  todoDomContainer.append(todoDom, todoDescription, todoDueDate)
+  return todoDomContainer
 }
 
 function loadDefaultProjects() {
@@ -221,7 +234,7 @@ addTodoClose.addEventListener('click', () => {
 addTodoSave.addEventListener('click', () => {
   if (!todoTitle.value) return
   disableDiv.style.display = 'none'
-  const newTodo = new Todo(todoTitle.value, todoDescription.value ?? 'No description added!', todoDueDate.value ?? new Date(), false)
+  const newTodo = new Todo(todoTitle.value, todoDescription.value, todoDueDate.value)
   const project = todoList.projects.find(item => item.id === currentProject.id)
   project.add(newTodo)
   todos.appendChild(createTodoDom(newTodo, project))

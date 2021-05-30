@@ -223,7 +223,13 @@ input:focus {
   row-gap: 1rem;
 }
 
-.todo-container {
+.todo-dom-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.todo-dom {
   display: grid;
   grid-template-columns: 1fr 14fr 1fr;
   align-items: center;
@@ -235,6 +241,10 @@ input:focus {
 
 .material-icons.complete {
   color: green;
+}
+
+.hidden {
+  display: none;
 }
 
 @media only screen and (max-width: 480px) {

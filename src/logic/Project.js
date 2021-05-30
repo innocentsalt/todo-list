@@ -1,6 +1,7 @@
 import { Task } from './Task'
 import { Collection } from './Collection'
 
+// Project IS A Task
 class Project extends Collection(Task) {
   constructor(title) {
     super(title)
